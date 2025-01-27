@@ -1042,14 +1042,41 @@ x86_64-w64-mingw32-gcc adduser_dll.c --shared -o adduser.dll
 
 ** Windows AD
 
-*** Bruteforcing kerberos
+*** Bruteforcing kerberos - Kerbrute
     https://github.com/ropnop/kerbrute
 
-    TODO: bruteuser
-    TODO: bruteforce
-    TODO: paswordspray
-    TODO: userenum
-   
+  
+bruteuser
+Bruteforce a single user's password from a wordlist.
+#+begin_example
+./kerbrute bruteuser -d <domain> <wordlist> <user>
+  #+end_example
+
+bruteforce
+Bruteforce username:password combos from a file or stdin.
+  #+begin_example
+./kerbrute bruteforce -d <domain> <combo_file>
+  #+end_example
+passwordspray
+Test a single password against a list of users.
+  #+begin_example
+./kerbrute passwordspray -d <domain> <user_list> <password>
+#+end_example
+
+userenum
+Enumerate valid domain usernames via Kerberos.
+ #+begin_example
+./kerbrute userenum -d <domain> <user_list>
+#+end_example
+Common Flags
+ #+begin_example
+--dc <domain_controller>: Specify the Domain Controller (KDC).
+-d <domain>: Set the target domain (e.g., example.com).
+-t <threads>: Number of threads to use (default: 10).
+-o <file>: Output log file.
+--safe: Safe mode (abort if accounts lock out).
+-v: Verbose logging (log failures).
+   #+end_example
 *** Kerberoasting
     through socks proxy using creds of web_svc 
 
