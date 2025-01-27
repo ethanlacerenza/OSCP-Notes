@@ -392,6 +392,7 @@ chisel client attack-box-ip:51234 R:8001:127.0.0.1:8001 R:8443:127.0.01:8443 -> 
 ** General
    Nmap port scanning
    #+begin_example
+nmap -sV  -p- -sT -A -T4  192.168.127.10  - > complete scan
 nmap -sC -sV <IP>
 nmap -p- <IP>
 sudo nmap -sU -p161 <IP>
