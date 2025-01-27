@@ -545,6 +545,11 @@ chmod +x pspy64
 ./pspy64
    #+end_example
 
+   Permission of Current user
+   #+begin_example
+sudo -l
+   #+end_example
+
    SUID files
    #+begin_example
 find / -perm -u=s  2>/dev/null
