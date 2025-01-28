@@ -288,6 +288,19 @@ sudo hashcat -m 13100 hashes.kerberoast rockyou.txt -r best64.rule --force
    #+end_example
       
 * Tunneling
+
+** Ligolo-NG
+Add interface and add network route
+   #+begin_example
+sudo ip tuntap add user kali mode tun ligolo
+sudo ip link set ligolo up   
+sudo ip route add 10.10.200.0/24 dev ligolo 
+   #+end_example
+Start Ligolo.
+   #+begin_example
+./proxy -self-cert
+.\agent.exe -connect kali_ip:11601 -ignore-cert
+   #+end_example
   
 ** socat
 
