@@ -203,10 +203,9 @@ john --wordlist=rockyou.txt hash.txt
 
 ** Bcrypt
    This is hard to crack:  $2y$10$7LaMUa8an8NrvnQsj5xZ3eDdOejgLyXE8IIvsC.hFy1d...Pb9cqG
-
-
    #+begin_example
 hashcat -m 3200 -a 0 hash /usr/share/wordlists/rockyou.txt
+john  --wordlist=/usr/share/wordlists/rockyou.txt hash
    #+end_example
 
 ** KeePass
