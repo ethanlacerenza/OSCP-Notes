@@ -491,10 +491,14 @@ gobuster vhost --wordlist /home/kali/repos/projects/SecLists/Discovery/DNS/subdo
    #+end_example
 
    ---------------------
-
+  ffuf
+   #+begin_example
+ffuf -c -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt -u http://192.168.0.172/FUZZ -t 100
+   #+end_example
    wfuzz
    #+begin_example
 wfuzz -w /home/kali/repos/projects/SecLists/Discovery/DNS/subdomains-top1million-110000.txt http://192.168.238.150:8080/search?FUZZ=FUZZ
+
    #+end_example
 
    ---------------------
